@@ -36,7 +36,6 @@ public class SearchActivity extends AppCompatActivity {
         YearEdit = findViewById(R.id.YearEdit);
         StatusText = findViewById(R.id.StatusText);
     }
-
     public void setData(View view) {
         Context context = this;
         CarDataRetriever cr = new CarDataRetriever();
@@ -71,12 +70,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
     public void goToListInfo(View view) {
         Intent intent = new Intent(this, ListInfoActivity.class);
         startActivity(intent);
     }
-
     public void goToHome(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
