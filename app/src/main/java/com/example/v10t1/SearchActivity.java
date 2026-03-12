@@ -3,7 +3,6 @@ package com.example.v10t1;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,11 +18,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SearchActivity extends AppCompatActivity {
-
     private EditText CityNameEdit;
-
     private EditText YearEdit;
-
     private TextView StatusText;
 
     @Override
@@ -36,54 +32,39 @@ public class SearchActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         CityNameEdit = findViewById(R.id.CityNameEdit);
         YearEdit = findViewById(R.id.YearEdit);
         StatusText = findViewById(R.id.StatusText);
     }
 
     public void setData(View view) {
-
         Context context = this;
         CarDataRetriever cr = new CarDataRetriever();
         ExecutorService service = Executors.newSingleThreadExecutor();
-
-        // Päivitetään heti UI-threadissä StatusText
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 StatusText.setText("Haetaan");
             }
         });
-
         service.execute(new Runnable() {
             @Override
             public void run() {
-
-                // Hae data taustasäikeessä
-                ArrayList<CarData> data = cr.getData(context,
-                        CityNameEdit.getText().toString(),
-                        YearEdit.getText().toString());
-
-                // Tarkistetaan null ja päivitetään UI-threadissä
+                ArrayList<CarData> carsData = cr.getData(context, CityNameEdit.getText().toString(), YearEdit.getText().toString());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (data == null) {
+                        if (carsData == null) {
                             StatusText.setText("Haku epäonnistui, kaupunkia ei ole olemassa tai se on kirjoitettu väärin.");
                             return;
                         }
-
-                        // Tallennetaan data storageen
                         CarDataStorage storage = CarDataStorage.getInstance();
                         storage.clearData();
-                        for (CarData c : data) {
-                            storage.addCarData(c);
+                        for (CarData data : carsData) {
+                            storage.addCarData(data);
                         }
                         storage.setCity(CityNameEdit.getText().toString());
                         storage.setYear(Integer.parseInt(YearEdit.getText().toString()));
-
-                        // Päivitetään UI-threadissä StatusText
                         StatusText.setText("Haku onnistui");
                     }
                 });

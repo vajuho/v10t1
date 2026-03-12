@@ -20,9 +20,7 @@ import java.util.HashMap;
 public class CarDataRetriever {
     public ArrayList<CarData> getData(Context context, String area, String year) {
         ObjectMapper objectMapper = new ObjectMapper();
-
         JsonNode areas = null;
-
         try {
             areas = objectMapper.readTree(new URL("https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px"));
         } catch (MalformedURLException e) {
@@ -77,26 +75,19 @@ public class CarDataRetriever {
 
                 ArrayList<String> carType = new ArrayList<>();
                 ArrayList<String> amount = new ArrayList<>();
-                ArrayList<String> num = new ArrayList<>();
 
                 carType.add("Henkilöautot");
                 carType.add("Pakettiautot");
                 carType.add("Kuorma-autot");
                 carType.add("Linja-autot");
                 carType.add("Erikoisautot");
-                carType.add("Yhteensä");
-                num.add("01");
-                num.add("02");
-                num.add("03");
-                num.add("04");
-                num.add("05");
 
                 for (JsonNode node : carData.get("value")) {
                     amount.add(node.asText());
                 }
                 ArrayList<CarData> carDataList = new ArrayList<>();
 
-                for(int i = 0; i < carType.size()-1; i++) {
+                for(int i = 0; i < carType.size(); i++) {
                     int currentAmount = Integer.parseInt(amount.get(i));
                     carDataList.add(new CarData(carType.get(i), currentAmount));
                 }

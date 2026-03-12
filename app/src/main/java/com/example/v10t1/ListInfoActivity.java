@@ -1,6 +1,5 @@
 package com.example.v10t1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -34,25 +33,21 @@ public class ListInfoActivity extends AppCompatActivity {
         CarInfoText = findViewById(R.id.CarInfoText);
         showData();
     }
-
     public void showData() {
         CarDataStorage storage = CarDataStorage.getInstance();
 
         CityText.setText(storage.getCity());
         YearText.setText(String.valueOf(storage.getYear()));
 
-        StringBuilder s = new StringBuilder();
         int total = 0;
+        String s = "";
         for (CarData i : storage.getCarData()) {
-            if (!"Yhteensä".equals(i.getType())) {
-                s.append(i.getType()).append(": ").append(i.getAmount()).append("\n");
+                s += i.getType() + ": " + i.getAmount() + "\n";
                 total += i.getAmount();
-            }
         }
-        s.append("Yhteensä: ").append(total);
-        CarInfoText.setText(s.toString());
+        s += "\nYhteensä: " + total;
+        CarInfoText.setText(s);
     }
-
     public void goToHome(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
