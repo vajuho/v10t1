@@ -81,13 +81,14 @@ public class CarDataRetriever {
                 carType.add("Kuorma-autot");
                 carType.add("Linja-autot");
                 carType.add("Erikoisautot");
+                carType.add("Yhteensä");
 
                 for (JsonNode node : carData.get("value")) {
                     amount.add(node.asText());
                 }
                 ArrayList<CarData> carDataList = new ArrayList<>();
 
-                for(int i = 0; i < carType.size(); i++) {
+                for(int i = 0; i < carType.size()-1; i++) {
                     int currentAmount = Integer.parseInt(amount.get(i));
                     carDataList.add(new CarData(carType.get(i), currentAmount));
                 }
