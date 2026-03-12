@@ -38,13 +38,19 @@ public class ListInfoActivity extends AppCompatActivity {
     public void showData() {
         CarDataStorage storage = CarDataStorage.getInstance();
 
-        String s = "";
         CityText.setText(storage.getCity());
         YearText.setText(String.valueOf(storage.getYear()));
-        for(CarData i : storage.getCarData()){
-            s += i.getType() + ": " + i.getAmount() + "\n";
+
+        StringBuilder s = new StringBuilder();
+        int total = 0;
+        for (CarData i : storage.getCarData()) {
+            if (!"Yhteensä".equals(i.getType())) {
+                s.append(i.getType()).append(": ").append(i.getAmount()).append("\n");
+                total += i.getAmount();
+            }
         }
-        CarInfoText.setText(s);
+        s.append("Yhteensä: ").append(total);
+        CarInfoText.setText(s.toString());
     }
 
     public void goToHome(View view) {

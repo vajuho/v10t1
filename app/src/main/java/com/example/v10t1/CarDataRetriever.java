@@ -95,15 +95,11 @@ public class CarDataRetriever {
                     amount.add(node.asText());
                 }
                 ArrayList<CarData> carDataList = new ArrayList<>();
-                int total = 0;
 
                 for(int i = 0; i < carType.size()-1; i++) {
                     int currentAmount = Integer.parseInt(amount.get(i));
                     carDataList.add(new CarData(carType.get(i), currentAmount));
-                    total += currentAmount;
                 }
-                carDataList.add(new CarData("Yhteensä", total));
-
                 return carDataList;
 
         } catch (MalformedURLException e) {
